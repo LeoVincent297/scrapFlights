@@ -58,14 +58,7 @@ DOSSIER_DONNEES = "donnees"
 FICHIER_CSV = "vols_data.csv"
 FICHIER_LOG = "scraping.log"
 
-# Configuration SFTP (à modifier selon vos paramètres)
-SFTP_CONFIG = {
-    "hostname": "votre_ip_ordinateur",
-    "username": "votre_username",
-    "password": "votre_password",  # Ou utiliser une clé SSH
-    "port": 22,
-    "remote_path": "/chemin/vers/dossier/destination"
-}
+
 
 # Configuration du scraping
 SCRAPING_CONFIG = {

@@ -10,7 +10,7 @@ Ce projet permet de scraper automatiquement les prix de vols sur Google Flights 
 - **Multiples destinations** : 16 destinations préconfigurées (Europe, Amérique, Asie, Afrique)
 - **Données complètes** : Prix, horaires, durée, escales, compagnies
 - **Stockage CSV** : Sauvegarde automatique en format CSV
-- **Transfert SFTP** : Envoi automatique vers votre ordinateur
+
 - **Logs détaillés** : Suivi complet des opérations
 - **Maintenance automatique** : Nettoyage des logs et mise à jour des dates
 
@@ -21,14 +21,12 @@ scrapFlights/
 ├── main.py              # Script principal
 ├── scraper.py           # Module de scraping
 ├── scheduler.py         # Planification automatique
-├── sftp_transfer.py     # Transfert SFTP
 ├── config.py            # Configuration
 ├── requirements.txt     # Dépendances
 └── donnees/            # Dossier des données
     ├── vols_data.csv   # Données collectées
     ├── scraping.log    # Logs de scraping
-    ├── scheduler.log   # Logs de planification
-    └── sftp_transfer.log # Logs de transfert
+    └── scheduler.log   # Logs de planification
 ```
 
 ## 🚀 Installation
@@ -70,7 +68,7 @@ pip install -r requirements.txt
 
 ### 3. Configuration
 
-Éditez le fichier `config.py` pour personnaliser :
+Éditez le fichier `config.py` pour personnaliser les destinations selon vos besoins :
 
 ```python
 # Modifier les destinations selon vos besoins
@@ -78,15 +76,6 @@ DESTINATIONS = [
     {"depart": "Paris", "arrivee": "Londres", "code_depart": "CDG", "code_arrivee": "LHR"},
     # Ajouter vos destinations...
 ]
-
-# Configuration SFTP (votre ordinateur)
-SFTP_CONFIG = {
-    "hostname": "192.168.1.100",  # IP de votre ordinateur
-    "username": "votre_username",
-    "password": "votre_password",
-    "port": 22,
-    "remote_path": "/home/user/flights_data"
-}
 ```
 
 ## 📊 Utilisation
@@ -111,28 +100,7 @@ python main.py --scheduler
 # Utiliser Ctrl+C pour arrêter proprement
 ```
 
-## 🔧 Configuration SFTP sur votre ordinateur
 
-### Windows
-
-1. **Installer un serveur SFTP** (WinSCP, FileZilla Server)
-2. **Ou utiliser WSL** avec OpenSSH :
-
-```bash
-# Dans WSL
-sudo apt install openssh-server
-sudo systemctl start ssh
-sudo systemctl enable ssh
-```
-
-### Linux/Mac
-
-```bash
-# Installer OpenSSH
-sudo apt install openssh-server  # Ubuntu/Debian
-sudo systemctl start ssh
-sudo systemctl enable ssh
-```
 
 ## 📈 Analyse des données
 
@@ -156,7 +124,6 @@ Les données sont sauvegardées dans `vols_data.csv` avec les colonnes :
 
 - `donnees/scraping.log` : Logs du scraping
 - `donnees/scheduler.log` : Logs de planification
-- `donnees/sftp_transfer.log` : Logs de transfert
 - `donnees/main.log` : Logs principaux
 
 ### Surveillance en temps réel
@@ -178,9 +145,7 @@ ps aux | grep python
    sudo apt install --reinstall google-chrome-stable
    ```
 
-2. **Erreur de connexion SFTP** :
-   - Vérifier l'IP et les credentials dans `config.py`
-   - Tester la connexion SSH manuellement
+
 
 3. **Pas de données récupérées** :
    - Vérifier la connexion internet
@@ -223,8 +188,6 @@ plt.show()
 
 ## 🔒 Sécurité
 
-- Utilisez des mots de passe forts pour SFTP
-- Considérez l'utilisation de clés SSH
 - Limitez l'accès réseau au Raspberry Pi
 - Surveillez régulièrement les logs
 
@@ -238,6 +201,7 @@ En cas de problème :
 ## 📝 Notes importantes
 
 - Le scraping respecte les délais entre les requêtes
-- Les données sont sauvegardées automatiquement
+- Les données sont sauvegardées automatiquement en CSV
 - Le système redémarre automatiquement en cas d'erreur
-- Surveillez l'espace disque sur le Raspberry Pi 
+- Surveillez l'espace disque sur le Raspberry Pi
+- Récupérez manuellement le fichier CSV depuis le dossier `donnees/` 
