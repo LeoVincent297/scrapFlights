@@ -15,7 +15,6 @@ from selenium.webdriver.chrome.options import Options
 from selenium.common.exceptions import TimeoutException, NoSuchElementException
 from webdriver_manager.chrome import ChromeDriverManager
 from fake_useragent import UserAgent
-import undetected_chromedriver as uc
 
 from config import DESTINATIONS, SCRAPING_CONFIG, DOSSIER_DONNEES, FICHIER_CSV
 
@@ -40,13 +39,16 @@ class GoogleFlightsScraper:
         return logging.getLogger(__name__)
     
     def _setup_driver(self):
-        """Configuration du driver Chrome avec undetected-chromedriver"""
+        """Configuration du driver Chrome avec Selenium standard pour ARM64"""
         try:
-            options = uc.ChromeOptions()
+            options = Options()
             options.add_argument('--no-sandbox')
             options.add_argument('--disable-dev-shm-usage')
             options.add_argument('--disable-gpu')
             options.add_argument('--disable-blink-features=AutomationControlled')
+            options.add_argument('--disable-extensions')
+            options.add_argument('--disable-plugins')
+            options.add_argument('--headless')  # Mode headless pour ARM64
             options.add_experimental_option("excludeSwitches", ["enable-automation"])
             options.add_experimental_option('useAutomationExtension', False)
             
@@ -54,7 +56,10 @@ class GoogleFlightsScraper:
             ua = UserAgent()
             options.add_argument(f'--user-agent={ua.random}')
             
-            self.driver = uc.Chrome(options=options)
+            # Utiliser ChromeDriver système pour ARM64
+            options.binary_location = "/usr/bin/chromium-browser"
+            
+            self.driver = webdriver.Chrome(options=options)
             self.driver.execute_script("Object.defineProperty(navigator, 'webdriver', {get: () => undefined})")
             
             self.logger.info("Driver Chrome configuré avec succès")
